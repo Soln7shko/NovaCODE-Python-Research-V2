@@ -1,0 +1,82 @@
+NovaC.O.D.E.forAI — Research Evaluation License
+
+Copyright © 2026 Amira Akhunova. All rights reserved.
+
+1. Scope
+
+These terms apply to the NovaC.O.D.E.forAI research reference implementation as an independent project, whether considered as a complete implementation or through its individual components, including its source code, tests, and accompanying documentation, to the extent that the copyright holder owns the relevant rights.
+
+The separately published official architectural PDF and any third-party components remain subject to their applicable rights and terms.
+
+This is a source-available research license, not an Open Source license.
+
+2. Permitted Use
+
+The following activities are permitted for private, non-commercial research and technical evaluation:
+
+- Viewing, downloading, reading, and studying the source code.
+- Running the code and conducting local tests.
+- Making local, non-public modifications strictly for research and testing.
+- Reviewing the implementation and its documented security properties.
+- Citing NovaC.O.D.E.forAI with appropriate attribution to Amira Akhunova and reference to the published architecture, DOI: 10.5281/zenodo.23645181.
+
+Permission for private evaluation does not constitute permission to distribute the implementation or its code, deploy it beyond private evaluation, integrate it into another product or system, or publish testing results.
+
+3. Uses Requiring Prior Written Permission
+
+Prior, explicit written permission from the copyright holder is required to:
+
+- Use or deploy NovaC.O.D.E.forAI, in whole or in part, as a standalone system beyond the private research and evaluation expressly permitted under this license.
+- Integrate NovaC.O.D.E.forAI, in whole or in part, into another AI platform, project, product, or service.
+- Redistribute the implementation, its source code, or modified versions outside the expressly permitted scope.
+- Publish or distribute modified implementations.
+- Commercially use, license, sell, or otherwise exploit the implementation, in whole or in part.
+- Grant third parties rights beyond those expressly provided by this license.
+
+No permission may be inferred from public availability, silence, prior correspondence, or permission granted for another purpose.
+
+4. Publication of Independent Testing Results for NovaC.O.D.E.forAI
+
+Local testing of NovaC.O.D.E.forAI is permitted exclusively for private study, research, and technical evaluation.
+
+Any public publication, distribution, or disclosure of the results of such testing is permitted only after obtaining the prior, explicit written consent of the copyright holder of NovaC.O.D.E.forAI.
+
+This requirement applies to all testing results, including positive and negative findings, reports, identified deficiencies, vulnerabilities, comparative studies, and any other conclusions derived from such testing.
+
+This requirement applies regardless of whether the results are published:
+
+- together with the source code or separately;
+- with or without attribution to the author of NovaC.O.D.E.forAI;
+- under the name of the person conducting the testing or any other party.
+
+Before publication, the interested party must request permission from the copyright holder, specifying exactly which materials are intended for publication and where they will be published.
+
+Merely notifying the copyright holder, submitting testing results to the copyright holder, receiving no response, or having obtained permission for a different publication does not constitute consent to the proposed publication.
+
+Each permission applies exclusively to the specific materials and publication conditions expressly approved by the copyright holder.
+
+In the absence of prior, explicit consent, publication is not permitted, except where disclosure is required by applicable law.
+
+5. Permission Requests
+
+Requests for prior written permission to use or deploy NovaC.O.D.E.forAI as a standalone implementation, incorporate it or its components into another project, distribute or commercially exploit the implementation, or publish independent testing results, must be submitted to:
+
+Email: winter7sunshine@yandex.com
+
+Requests must describe the intended use or publication and identify the relevant materials.
+
+Submitting a request, providing notification, or receiving no response does not constitute authorization.
+
+Permission is granted only through the copyright holder's explicit written approval and applies solely to the approved scope.
+
+6. Reservation of Rights
+
+All rights not expressly granted remain reserved to the copyright holder.
+
+Nothing in these terms overrides applicable mandatory laws, statutory exceptions, third-party rights, or permissions necessarily granted under the terms of a hosting platform.
+
+7. Disclaimer
+
+The research implementation is provided "as is", without any guarantee of fitness for production deployment, security certification, or resistance to all possible attacks.
+
+The documented tests demonstrate behavior in the specified research environment and do not establish the security of a production integration.
