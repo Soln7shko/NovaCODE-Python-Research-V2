@@ -1,0 +1,50 @@
+flowchart TB
+    classDef approved fill:#E8F4FF,stroke:#2674A9,stroke-width:1.6px,color:#122D44
+    classDef check fill:#FFF1D8,stroke:#C77820,stroke-width:1.6px,color:#443017
+    classDef pass fill:#E5F5E7,stroke:#328047,stroke-width:2px,color:#173B22
+    classDef fail fill:#FBE8E8,stroke:#BD3B3B,stroke-width:2px,color:#591818
+    classDef neutral fill:#F5F6F9,stroke:#6C7A8E,stroke-width:1px,color:#283748
+
+    subgraph APPROVAL["APPROVED BASELINE"]
+      direction TB
+      A["User authorizes upload: document X to destination A"]
+      P["User chooses X via Proceed:<br/>Guide atomically pins EXACT immutable X<br/>and sends approval record to Bridge"]
+      R["Bridge holds immutable authorized Task record<br/>and checks applicable Proceed approval"]
+      A --> P --> R
+    end
+
+    subgraph TEST1["TEST 1 - DESTINATION"]
+      direction TB
+      T1["Untrusted input induces AI to prepare a tool call<br/>to destination B or with extra document Y"]
+      C1{"Bridge compares ACTUAL tool request<br/>with approved operation, A and X (§7)"}
+      D1["DENIED before execution<br/>Rejection logged; no execution attempt spent (§7)"]
+      T1 --> C1 -->|"Mismatch"| D1
+    end
+
+    subgraph TEST2["TEST 2 - SAME-PATH FILE"]
+      direction TB
+      T2["AI submits actual request:<br/>upload approved X to A, file path P"]
+      C2["Bridge verifies request against approved records (§7)"]
+      Admit["Request admitted; attempt counted atomically (§4.3)"]
+      Mut["TEST FIXTURE changes file bytes at the SAME path P:<br/>X becomes X-prime AFTER Bridge check"]
+      Read["Execution tool attempts to use content at path P"]
+      Decide{"What content actually reaches the external action?"}
+      Success["PASS: only approved X is used,<br/>or unauthorized upload is prevented"]
+      Failure["FAIL: modified X-prime is uploaded<br/>despite approval of X"]
+      T2 --> C2 --> Admit --> Mut --> Read --> Decide
+      Decide -->|"Approved X / no substituted dispatch"| Success
+      Decide -->|"Substituted X-prime dispatched"| Failure
+    end
+
+    R -->|"Approved record"| T1
+    R -->|"Approved record"| T2
+    N["ARCHITECTURAL REQUIREMENT (§§6.2, 7, 9.3):<br/>unapproved content cannot replace authorized content through execution.<br/>Specific mechanisms are selected by developers; these tests are NOT implementation results."]
+    D1 --> N
+    Success --> N
+    Failure --> N
+
+    class A,P,R approved
+    class C1,C2,Decide check
+    class D1,Success pass
+    class Failure fail
+    class T1,T2,Admit,Mut,Read,N neutral

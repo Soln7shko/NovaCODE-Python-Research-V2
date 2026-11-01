@@ -1,0 +1,47 @@
+flowchart TD
+    classDef ordinary fill:#EAF4FF,stroke:#3376BA,stroke-width:2px,color:#193A5A
+    classDef protected fill:#FFF1E2,stroke:#C86624,stroke-width:2px,color:#653414
+    classDef active fill:#EAF6EE,stroke:#388257,stroke-width:2px,color:#193F2D
+    classDef user fill:#263E59,stroke:#263E59,stroke-width:2px,color:#FFFFFF
+
+    User(["USER"])
+    Source["External sources<br/>(data, never command authority)"]
+
+    subgraph Ordinary["ORDINARY MODE - PAJAMAS"]
+        Chat["Regular AI chat"]
+        Read["Internal functions and<br/>preapproved information tools"]
+    end
+
+    subgraph Protected["PROTECTED MODE - DRESS CODE"]
+        Guide["GUIDE<br/>Task and Step preparation<br/>User approvals and states"]
+        Gen["Protected One-Time<br/>Code Generator"]
+        Bridge["BRIDGE<br/>Independent authorization<br/>and actual-request verification"]
+    end
+
+    AI["AI<br/>Prepares approved Steps<br/>and concrete tool requests"]
+    Tool["EXTERNAL EXECUTION TOOL<br/>Executes admitted request"]
+
+    User -->|"Conversation"| Chat
+    Source -.->|"Untrusted data only"| Chat
+    Chat -->|"Within assigned permissions"| Read
+
+    User -->|"Task Window: enter Task / approve Steps"| Guide
+    Guide -->|"After user OK"| Gen
+    Gen -->|"VALID CODE + APPROVED TASK WITH STEPS + SAME CODE"| Bridge
+    Bridge -->|"Authorized Task without secret code"| AI
+
+    AI -.->|"Proposed result shown to user"| User
+    Guide -.->|"Protected Proceed, when required"| User
+    User -.->|"Approve selected result"| Guide
+    Guide -.->|"Protected record of pinned Proceed approval"| Bridge
+
+    AI -->|"Actual executable request"| Bridge
+    Bridge -->|"Only verified, admitted request"| Tool
+    Tool -.->|"Protected outcome / status information"| Bridge
+    Bridge -.->|"Verified outcome information"| Guide
+    Guide -.->|"Display status and manage closure"| User
+
+    class User user
+    class Source,Chat,Read ordinary
+    class Guide,Gen,Bridge protected
+    class AI,Tool active

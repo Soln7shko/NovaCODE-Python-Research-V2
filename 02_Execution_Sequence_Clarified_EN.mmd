@@ -1,0 +1,71 @@
+sequenceDiagram
+    autonumber
+    actor U as User
+    participant G as Guide
+    participant Gen as Code Generator
+    participant B as Bridge
+    participant AI as AI
+    participant Ext as Execution Tool
+
+    rect rgb(239, 246, 255)
+        Note over U,Ext: TASK DEFINITION - user authorization (§§3-5)
+        U->>G: Enter Task in protected Task Window
+        G->>G: Check Task completeness
+        alt Required details are missing
+            G-->>U: Request missing information (generator remains idle)
+        else Task complete
+            G-->>U: Present proposed Steps and per-Step attempt limits
+            U->>G: Approve Task, Steps and limits with OK
+        end
+    end
+    rect rgb(255, 249, 236)
+        Note over G,AI: INITIAL AUTHORIZATION - Bridge sends authorized instructions TO AI (§§2.3, 5)
+        G->>Gen: Launch protected generator AFTER OK
+        Gen->>B: VALID CODE + APPROVED TASK WITH STEPS + SAME CODE
+        Note over B: Freeze NEW executable actions for this Task only
+        B->>B: Verify provenance, code validity and matching codes
+        Note over B: If invalid, protected execution remains blocked (§2.3)
+        B->>B: On SUCCESS, create scoped authorization and consume code once
+        B->>AI: Send approved Task and Steps WITHOUT secret code
+        Note over B: Authorization begins (30-minute initial period)
+        B->>B: Release Freeze after confirmed Task transmission
+    end
+    rect rgb(239, 246, 255)
+        Note over U,AI: RESULT APPROVAL - only if a Step requires Proceed (§6.2)
+        AI->>AI: Prepare authorized Steps and candidate result
+        opt Step requires user approval via Proceed
+            AI-->>U: Present candidate result(s) in ordinary chat
+            G-->>U: Overlay protected Proceed tied to each candidate
+            U->>G: Approve one exact candidate using Proceed
+            G->>G: Atomically pin selected immutable content
+            G->>B: Send PROTECTED USER APPROVAL RECORD (not a tool request)
+            Note over G,B: Only the finally pinned result can feed dependent Steps
+        end
+    end
+    rect rgb(237, 250, 239)
+        Note over B,Ext: ACTUAL EXECUTION - AI submits a TOOL CALL, Guide does not reapprove the plan (§7)
+        AI->>B: ACTUAL executable tool request: operation + exact arguments
+        Note over AI,B: Not a statement of intent and not a new Task proposal
+        B->>B: Compare with IMMUTABLE approved Task record
+        B->>B: Check Step, tool, destination/content, Proceed, deadline, limits
+        alt Actual request is authorized
+            B->>B: Atomically consume permitted execution attempt (§4.3)
+            B->>Ext: Admit the EXACT checked request to execution tool
+            Ext-->>B: Protected reply / status / confirmation
+            B-->>G: Return protected execution information
+            G-->>U: Display verified result / FAILED / UNKNOWN as applicable
+        else Actual material arguments do not match
+            Note over B: DENIED - log refusal, NO execution attempt consumed
+            B-->>G: Report mismatch (§§7, 9.3)
+            G-->>U: Inform user, external action not admitted
+        else Authorization, deadline or limit invalid
+            Note over B: BLOCK before protected execution
+            B-->>G: Report blocking condition
+            G-->>U: Inform user
+        end
+    end
+    opt All Commands have completed (§10.4)
+        G->>G: Close Task and revoke remaining permissions
+        G->>B: Close protected authorization
+        B->>B: Stop admitting requests for this Task
+    end
